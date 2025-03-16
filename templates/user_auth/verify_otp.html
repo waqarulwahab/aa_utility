@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}Verify OTP - Authentication System{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-5">
+        <div class="auth-card">
+            <div class="auth-header text-center mb-4">
+                <h2>Email Verification</h2>
+                <p class="text-muted">Enter the 6-digit OTP sent to your email</p>
+            </div>
+            
+            <form method="post" class="auth-form">
+                {% csrf_token %}
+                {{ form|crispy }}
+                
+                <div class="d-grid mt-4">
+                    <button type="submit" class="btn btn-primary btn-lg">Verify OTP</button>
+                </div>
+                
+                <div class="text-center mt-3">
+                    <p>Didn't receive the code? <a href="{% url 'resend_otp' %}" class="link-primary">Resend OTP</a></p>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Auto submit when all digits are entered
+    document.addEventListener('DOMContentLoaded', function() {
+        const otpInput = document.querySelector('.otp-input');
+        
+        if (otpInput) {
+            otpInput.addEventListener('input', function() {
+                // Convert input to digits only
+                this.value = this.value.replace(/\D/g, '');
+                
+                // Limit to 6 digits
+                if (this.value.length > 6) {
+                    this.value = this.value.slice(0, 6);
+                }
+                
+                // Auto submit when 6 digits are entered
+                if (this.value.length === 6) {
+                    setTimeout(() => {
+                        this.form.submit();
+                    }, 500);
+                }
+            });
+        }
+    });
+</script>
+{% endblock %}

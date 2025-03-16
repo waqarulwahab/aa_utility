@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}Login - Authentication System{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-5">
+        <div class="auth-card">
+            <div class="auth-header text-center mb-4">
+                <h2>Welcome Back</h2>
+                <p class="text-muted">Login to your account</p>
+            </div>
+            
+            <form method="post" class="auth-form">
+                {% csrf_token %}
+                {{ form|crispy }}
+                
+                <div class="forgot-password text-end mb-3">
+                    <a href="{% url 'password_reset' %}" class="link-primary">Forgot Password?</a>
+                </div>
+                
+                <div class="d-grid">
+                    <button type="submit" class="btn btn-primary btn-lg">Login</button>
+                </div>
+                
+                <div class="text-center mt-4">
+                    <p>Don't have an account? <a href="{% url 'signup' %}" class="link-primary">Sign Up</a></p>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
